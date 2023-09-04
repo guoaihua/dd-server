@@ -4,7 +4,7 @@ const axios = require("axios")
 const fs = require('fs')
 const path = require("path")
 const multiparty = require('multiparty');
-
+const themesMap = {}
 // const sqlite3 = require('sqlite3').verbose();
  
 // // 创建数据库连接
@@ -21,6 +21,31 @@ const multiparty = require('multiparty');
  
 // // 关闭数据库连接
 // db.close();
+
+
+
+    const commonPicLibs = ()=>{
+        const ddServerImagePath = '/usr/share/dd-data'
+        // 读取当前目录的信息，返回图片的路径信息
+        const arr = fs.readdirSync(path.resolve(ddServerImagePath), {withFileTypes: true, recursive: true})
+        if(Array.isArray(arr) && arr.length > 0){
+            // 先解析一层，即文件夹如果有多层则会忽
+            arr.forEach(item=>{
+                if(item.isDirectory()){
+                    // 读取该文件夹下面的文件
+                const fileChildren =  fs.readdirSync(path.resolve(ddServerImagePath, item.name), {withFileTypes: true})
+                themesMap[item.name] = fileChildren?.filter(i=> !i.isDirectory())?.map(i=> `/${item?.name}/${i?.name}`)
+                }
+            })
+        }
+    }
+    commonPicLibs()
+
+    setInterval(()=>{
+        //  一个小时手动刷新一下， 防止图片库更新
+        commonPicLibs()
+    }, 1000 * 60 * 60 )
+
 app.use(express.static('images'))
 
 app.use((req,res, next)=>{
@@ -32,7 +57,7 @@ app.use((req,res, next)=>{
 
 app.get('/getPics', (req, res)=>{
     res.send({
-        message: 'ok'
+       themesMap
     })
 })
 
