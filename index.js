@@ -23,6 +23,7 @@ const themesMap = {};
 // db.close();
 
 const commonPicLibs = () => {
+  // const ddServerImagePath = "/Users/ziming/Desktop/dd-photo-pics";
   const ddServerImagePath = "/usr/share/dd-data";
   // 读取当前目录的信息，返回图片的路径信息
   const arr = fs.readdirSync(path.resolve(ddServerImagePath), {
