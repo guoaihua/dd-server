@@ -22,8 +22,7 @@ function App() {
     fetch("http://localhost:9000/addPic", {
       method: "POST",
       body: formData,
-    })
-      .then((res) => res.json())
+    }).then((res) => res.json())
       .then(() => {
         setFileList([]);
         message.success("upload successfully.");
