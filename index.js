@@ -67,8 +67,6 @@ const refreshToken = () => {
     .get("https://api.weixin.qq.com/cgi-bin/token", {
       params: {
         grant_type: "client_credential",
-        appid: "wx69abccfa61662325",
-        secret: "18e0cd0fcb42ccf28fc2faffc7d42006",
       },
     })
     .then(({ data }) => {
@@ -111,8 +109,6 @@ app.get("/login", (req, res) => {
     .get("https://api.weixin.qq.com/sns/jscode2session", {
       params: {
         grant_type: "authorization_code",
-        appid: "wx69abccfa61662325",
-        secret: "18e0cd0fcb42ccf28fc2faffc7d42006",
         js_code: req.query.code,
       },
     })
